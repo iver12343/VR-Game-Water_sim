@@ -318,7 +318,7 @@ Material:
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
     - _WaterColor: {r: 0.3207547, g: 0.26937, b: 0.20728016, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &6860370342297475169
+--- !u!114 &8553334222946496471
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
