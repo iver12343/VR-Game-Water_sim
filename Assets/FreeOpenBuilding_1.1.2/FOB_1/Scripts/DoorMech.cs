@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
+using BNG;
 
 public class DoorMech : MonoBehaviour 
 {
@@ -19,14 +21,17 @@ public class DoorMech : MonoBehaviour
 		
 	void OnTriggerStay(Collider col)
 	{
-		if(col.gameObject.tag == ("Player") && Input.GetKeyDown(KeyCode.E))
+        Debug.Log("Something entered: " + col.name);
+
+        if (col.gameObject.tag == ("Player"))
 		{
-			if (!doorBool)
-				doorBool = true;
-			else
-				doorBool = false;
+			doorBool = true;
+			Debug.Log("door open");
 		}
-	}
+		else
+			doorBool = false;
+		}
+	
 
 	void Update()
 	{
