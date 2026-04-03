@@ -1,45 +1,40 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditorInternal;
-using UnityEngine;
+﻿using UnityEngine;
 using BNG;
 
-public class DoorMech : MonoBehaviour 
+public class DoorMech : MonoBehaviour
 {
+    public Vector3 OpenRotation, CloseRotation;
+    public float rotSpeed = 3f;
+    public bool doorBool;
 
-	public Vector3 OpenRotation, CloseRotation;
+    void Start()
+    {
+        doorBool = false;
+        CloseRotation = transform.eulerAngles;
+    }
 
-	public float rotSpeed = 1f;
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.CompareTag("Player") && InputBridge.Instance.LeftTriggerDown)
+        {
+           
+            doorBool = true;
+            Debug.Log(doorBool);
+        }
+    }
 
-	public bool doorBool;
+    //void OnTriggerExit(Collider col)
+    //{
+    //    if (col.CompareTag("Player"))
+    //        doorBool = false;
+    //}
 
+    void Update()
+    {
+        Quaternion targetRotation = doorBool
+            ? Quaternion.Euler(OpenRotation)
+            : Quaternion.Euler(CloseRotation);
 
-	void Start()
-	{
-		doorBool = false;
-	}
-		
-	void OnTriggerStay(Collider col)
-	{
-        Debug.Log("Something entered: " + col.name);
-
-        if (col.gameObject.tag == ("Player"))
-		{
-			doorBool = true;
-			Debug.Log("door open");
-		}
-		else
-			doorBool = false;
-		}
-	
-
-	void Update()
-	{
-		if (doorBool)
-			transform.rotation = Quaternion.Lerp (transform.rotation, Quaternion.Euler (OpenRotation), rotSpeed * Time.deltaTime);
-		else
-			transform.rotation = Quaternion.Lerp (transform.rotation, Quaternion.Euler (CloseRotation), rotSpeed * Time.deltaTime);	
-	}
-
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotSpeed * Time.deltaTime);
+    }
 }
-
