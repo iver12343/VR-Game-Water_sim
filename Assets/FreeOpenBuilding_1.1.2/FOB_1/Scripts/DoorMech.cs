@@ -15,7 +15,7 @@ public class DoorMech : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.CompareTag("Player") && InputBridge.Instance.LeftTriggerDown)
+        if (col.CompareTag("Player") )
         {
            
             doorBool = true;
