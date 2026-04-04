@@ -29,16 +29,16 @@ namespace BNG {
         // Start is called before the first frame update
         void Start() {
             rigid = GetComponent<Rigidbody>();
-            rigid.isKinematic = true;
+            // rigid.isKinematic = true;
         }
 
         void Update() {
             // Update delay status
             if(!reachedDelay) {
-                delayedTime += Time.deltaTime;
-                if (delayedTime >= StartDelay) {
+                // delayedTime += Time.deltaTime;
+                // if (delayedTime >= StartDelay) {
                     reachedDelay = true;
-                }
+                // }
             }
 
             if(MoveInUpdate) {
