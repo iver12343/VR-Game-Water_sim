@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/ReversedAssets/City Builder Urban/HDRP/Scenes/CityBuilderUrbanDemo.unity
+    path: Assets/ReversedAssets/City Builder Urban/HDRP/Scenes/Main_Water_Simulation.unity
     guid: 9dd46b493c1396a42b3cf2aa11fde485
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 2238d457089b9494896515a25debf01c,
