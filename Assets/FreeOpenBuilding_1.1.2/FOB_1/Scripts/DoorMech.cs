@@ -7,6 +7,9 @@ public class DoorMech : MonoBehaviour
     public float rotSpeed = 3f;
     public bool doorBool;
 
+    [Header("Inventory Check")]
+    public InventoryFullChecker inventoryChecker; // Drag player object here
+
     void Start()
     {
         doorBool = false;
@@ -15,26 +18,26 @@ public class DoorMech : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.CompareTag("Player") )
+        if (col.CompareTag("Player"))
         {
-           
-            doorBool = true;
-            Debug.Log(doorBool);
+            // Only open if inventory is full
+            if (inventoryChecker != null && inventoryChecker.IsInventoryFull())
+            {
+                doorBool = true;
+                Debug.Log("Inventory full — Door opening!");
+            }
+            else
+            {
+                Debug.Log("Inventory not full — Door locked!");
+            }
         }
     }
-
-    //void OnTriggerExit(Collider col)
-    //{
-    //    if (col.CompareTag("Player"))
-    //        doorBool = false;
-    //}
 
     void Update()
     {
         Quaternion targetRotation = doorBool
             ? Quaternion.Euler(OpenRotation)
             : Quaternion.Euler(CloseRotation);
-
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotSpeed * Time.deltaTime);
     }
 }
