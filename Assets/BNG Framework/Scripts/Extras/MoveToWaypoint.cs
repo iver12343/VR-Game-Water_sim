@@ -35,10 +35,10 @@ namespace BNG {
         void Update() {
             // Update delay status
             if(!reachedDelay) {
-                // delayedTime += Time.deltaTime;
-                // if (delayedTime >= StartDelay) {
+                delayedTime += Time.deltaTime;
+                if (delayedTime >= StartDelay) {
                     reachedDelay = true;
-                // }
+                }
             }
 
             if(MoveInUpdate) {
