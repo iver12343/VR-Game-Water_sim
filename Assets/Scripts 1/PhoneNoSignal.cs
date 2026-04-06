@@ -7,16 +7,22 @@ public class PhoneNoSignal : MonoBehaviour
     [Header("UI Text Elements")]
     public GameObject hintText;
     public GameObject noSignalText;
-    public GameObject callingText;      // New calling text object
+    public GameObject callingText;
 
     [Header("Audio")]
     public AudioSource noSignalSound;
     public AudioSource voiceHint;
-    public AudioSource callingSound;    // Looping ring sound
+    public AudioSource callingSound;
 
     [Header("Settings")]
     public float messageDuration = 2f;
-    public float callingDotSpeed = 0.5f; // Speed of dot animation
+    public float callingDotSpeed = 0.5f;
+
+    [Header("Helicopter")]
+    public GameObject helicopter;              // Drag your helicopter GameObject here
+    public float helicopterSpeed = 5f;         // Movement speed along Z axis
+    public float helicopterMoveDistance = 50f; // How far it travels before stopping (0 = infinite)
+    public bool stopAtDestination = true;      // Stop moving after reaching distance
 
     private Grabbable grabbable;
     private InputBridge input;
@@ -24,27 +30,35 @@ public class PhoneNoSignal : MonoBehaviour
     private bool isShowing = false;
     private bool voicePlayed = false;
     private bool wasHeld = false;
-    private bool atDestination = false; // True when player is in destination zone
+    private bool atDestination = false;
 
-    // Dot animation variables
     private TMP_Text callingTMP;
     private float dotTimer = 0f;
     private int dotCount = 0;
     private bool isCalling = false;
+
+    // Helicopter tracking
+    private Vector3 helicopterStartPos;
+    private bool helicopterMoving = false;
 
     void Start()
     {
         grabbable = GetComponent<Grabbable>();
         input = InputBridge.Instance;
 
-        // Get TMP component from CallingText
         if (callingText != null)
             callingTMP = callingText.GetComponent<TMP_Text>();
 
-        // Initial states
         if (hintText != null) hintText.SetActive(true);
         if (noSignalText != null) noSignalText.SetActive(false);
         if (callingText != null) callingText.SetActive(false);
+
+        // Make sure helicopter starts hidden
+        if (helicopter != null)
+        {
+            helicopter.SetActive(false);
+            helicopterStartPos = helicopter.transform.position;
+        }
     }
 
     void Update()
@@ -70,14 +84,12 @@ public class PhoneNoSignal : MonoBehaviour
 
         if (triggerPressed && !isShowing && !isCalling)
         {
-            // Check if player is at destination
             if (atDestination)
-                ShowCalling();      // Show calling animation
+                ShowCalling();
             else
-                ShowNoSignal();     // Show no signal
+                ShowNoSignal();
         }
 
-        // Auto hide no signal timer
         if (isShowing)
         {
             hideTimer -= Time.deltaTime;
@@ -85,14 +97,54 @@ public class PhoneNoSignal : MonoBehaviour
                 HideNoSignal();
         }
 
-        // Animate calling dots
         if (isCalling)
             AnimateCallingDots();
+
+        // Move helicopter if active
+        if (helicopterMoving)
+            MoveHelicopter();
+    }
+
+    // --- Helicopter ---
+
+    void ActivateHelicopter()
+    {
+        if (helicopter == null) return;
+
+        helicopter.SetActive(true);
+        helicopter.transform.position = helicopterStartPos; // Reset to start position
+        helicopterMoving = true;
+        Debug.Log("Helicopter activated and moving.");
+    }
+
+    void DeactivateHelicopter()
+    {
+        if (helicopter == null) return;
+
+        helicopterMoving = false;
+        helicopter.SetActive(false);
+        Debug.Log("Helicopter deactivated.");
+    }
+
+    void MoveHelicopter()
+    {
+        // Move along positive Z axis
+        helicopter.transform.Translate(Vector3.forward * helicopterSpeed * Time.deltaTime, Space.World);
+
+        // Optionally stop after a set distance
+        if (stopAtDestination && helicopterMoveDistance > 0f)
+        {
+            float distanceTravelled = Vector3.Distance(helicopterStartPos, helicopter.transform.position);
+            if (distanceTravelled >= helicopterMoveDistance)
+            {
+                helicopterMoving = false;
+                Debug.Log("Helicopter reached destination, stopping.");
+            }
+        }
     }
 
     // --- Destination Detection ---
 
-    // Called when player/phone enters destination zone
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Destination"))
@@ -102,13 +154,11 @@ public class PhoneNoSignal : MonoBehaviour
         }
     }
 
-    // Called when player/phone exits destination zone
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Destination"))
         {
             atDestination = false;
-            // If calling and player leaves zone, stop calling
             if (isCalling) StopCalling();
             Debug.Log("Phone: Left destination zone");
         }
@@ -168,6 +218,9 @@ public class PhoneNoSignal : MonoBehaviour
 
         if (callingSound != null)
             callingSound.Play();
+
+        // Activate helicopter when calling starts
+        ActivateHelicopter();
     }
 
     void StopCalling()
@@ -178,6 +231,9 @@ public class PhoneNoSignal : MonoBehaviour
 
         if (callingSound != null && callingSound.isPlaying)
             callingSound.Stop();
+
+        // Deactivate helicopter when calling stops
+        DeactivateHelicopter();
     }
 
     // --- Dot Animation ---
@@ -189,11 +245,10 @@ public class PhoneNoSignal : MonoBehaviour
         if (dotTimer >= callingDotSpeed)
         {
             dotTimer = 0f;
-            dotCount = (dotCount + 1) % 4; // Cycles 0,1,2,3
+            dotCount = (dotCount + 1) % 4;
 
             if (callingTMP != null)
             {
-                // Builds dot string: "" / "." / ".." / "..."
                 string dots = new string('.', dotCount);
                 callingTMP.text = "Calling" + dots;
             }
