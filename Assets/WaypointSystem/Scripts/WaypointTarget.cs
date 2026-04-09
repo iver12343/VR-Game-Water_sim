@@ -21,6 +21,13 @@ namespace WrightAngle.Waypoint
         [Tooltip("Offset applied to the target's position in world space. Use this to make the marker track slightly above or beside the actual transform position (e.g., above a character's head).")]
         public Vector3 WorldOffset = Vector3.zero;
 
+        // --- Category ---
+        public enum WaypointCategory { Item, Place }
+
+        [Header("Behaviour")]
+        [Tooltip("Item = reappears when distance > 1 again. Place = permanently hides once player gets within 1 unit.")]
+        public WaypointCategory Category = WaypointCategory.Item;
+
         [Header("Appearance")]
         [Tooltip("Optional preset defining this waypoint's visual style. If null, uses the default prefab appearance.")]
         [SerializeField] private WaypointPreset preset;
@@ -83,10 +90,6 @@ namespace WrightAngle.Waypoint
 
         // --- Unity Lifecycle Callbacks ---
 
-        // OnEnable: Automatic registration is handled by WaypointUIManager during its Start phase
-        // to avoid script execution order issues. Manual activation via ActivateWaypoint()
-        // can still be called after OnEnable.
-
         private void OnDisable()
         {
             // Ensure the manager stops tracking this target if the component or its GameObject is disabled.
@@ -101,70 +104,55 @@ namespace WrightAngle.Waypoint
         /// </summary>
         public void ActivateWaypoint()
         {
-            // Only proceed if the GameObject is active and the target isn't already registered.
             if (!gameObject.activeInHierarchy || IsRegistered)
             {
                 return;
             }
 
-            // Notify the WaypointUIManager (or other listeners) to start tracking this target.
-#pragma warning disable CS0618 // Obsolete warning suppressed - event still fires for backwards compatibility
+#pragma warning disable CS0618
             OnTargetEnabled?.Invoke(this);
 #pragma warning restore CS0618
         }
 
         /// <summary>
         /// Requests that this waypoint target stops being tracked by the system, hiding its marker.
-        /// This allows hiding a marker without disabling the target GameObject itself.
         /// Has no effect if not currently registered.
         /// </summary>
         public void DeactivateWaypoint()
         {
-            // Use the shared internal logic for deactivation.
             ProcessDeactivation();
         }
 
         // --- Internal Logic ---
 
-        /// <summary>
-        /// Contains the shared logic for untracking the target and notifying listeners via the
-        /// OnTargetDisabled event. Prevents multiple notifications.
-        /// </summary>
         private void ProcessDeactivation()
         {
-            // Only proceed if the target was actually registered.
             if (!IsRegistered) return;
 
-            // Notify the WaypointUIManager (or other listeners) to stop tracking this target.
-#pragma warning disable CS0618 // Obsolete warning suppressed - event still fires for backwards compatibility
+#pragma warning disable CS0618
             OnTargetDisabled?.Invoke(this);
 #pragma warning restore CS0618
         }
 
-
         // --- Editor Visualization ---
-        // Provides visual feedback in the Scene view when the object is selected.
         private void OnDrawGizmosSelected()
         {
-            // Draw a wire sphere gizmo at the actual tracked position (with offset applied).
-            // Color changes based on whether it's currently registered with the manager.
             Gizmos.color = IsRegistered ? Color.green : Color.yellow;
             Gizmos.DrawWireSphere(TargetPosition, 0.5f);
-            
-            // If offset is applied, draw a line from transform to offset position for clarity.
+
             if (WorldOffset.sqrMagnitude > 0.0001f)
             {
                 Gizmos.color = Color.cyan;
                 Gizmos.DrawLine(transform.position, TargetPosition);
-                // Draw a small sphere at the actual transform position.
                 Gizmos.DrawWireSphere(transform.position, 0.15f);
             }
 #if UNITY_EDITOR
-            // Display a helpful label above the target in the Scene view.
             string label = $"Waypoint: {gameObject.name}";
             if (!ActivateOnStart) label += " (Manual Activation)";
+            // Show category in scene view label
+            label += $" [{Category}]";
             UnityEditor.Handles.Label(TargetPosition + Vector3.up * 0.7f, label);
 #endif
         }
-    } // End Class
-} // End Namespace
+    }
+}

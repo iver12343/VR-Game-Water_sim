@@ -193,10 +193,21 @@ namespace WrightAngle.Waypoint
 
                 // Hide marker when within the "near" distance threshold if enabled.
                 // Hide marker when within 1 unit distance.
+                // Handle distance-based hiding based on category
                 if (distance <= 1f)
                 {
-                    TryReleaseMarker(target);
-                    continue;
+                    if (target.Category == WaypointTarget.WaypointCategory.Place)
+                    {
+                        // Permanently remove — never show again
+                        RemoveTargetCompletely(target, i);
+                        continue;
+                    }
+                    else
+                    {
+                        // Item — just hide marker, can reappear if distance increases
+                        TryReleaseMarker(target);
+                        continue;
+                    }
                 }
 
                 // Project the target's world position to screen space.
