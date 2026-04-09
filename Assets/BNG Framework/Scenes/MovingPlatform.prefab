@@ -466,6 +466,7 @@ MonoBehaviour:
   MovementSpeed: 0.5
   ReachedDestination: 0
   StartDelay: 2
+  reachedDelay: 0
   PositionDifference: {x: 0, y: 0, z: 0}
   MoveInUpdate: 0
   MoveInFixedUpdate: 1
