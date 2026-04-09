@@ -1133,9 +1133,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b6475f5812b7c740b6b82e4b0f347cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadSceneMode: 0
-  UseSceenFader: 1
-  ScreenFadeTime: 0.5
 --- !u!114 &411228548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2558,6 +2555,74 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 980541952}
   m_CullTransparentMesh: 0
+--- !u!1001 &1022550123
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1418655148552897180, guid: 6729a54872101f240bccba82ef51dedb,
+        type: 3}
+      propertyPath: m_Name
+      value: LoadingScreen
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998474065936841431, guid: 6729a54872101f240bccba82ef51dedb,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998474065936841431, guid: 6729a54872101f240bccba82ef51dedb,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998474065936841431, guid: 6729a54872101f240bccba82ef51dedb,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998474065936841431, guid: 6729a54872101f240bccba82ef51dedb,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998474065936841431, guid: 6729a54872101f240bccba82ef51dedb,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998474065936841431, guid: 6729a54872101f240bccba82ef51dedb,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998474065936841431, guid: 6729a54872101f240bccba82ef51dedb,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998474065936841431, guid: 6729a54872101f240bccba82ef51dedb,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998474065936841431, guid: 6729a54872101f240bccba82ef51dedb,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3998474065936841431, guid: 6729a54872101f240bccba82ef51dedb,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6729a54872101f240bccba82ef51dedb, type: 3}
 --- !u!1 &1087611558
 GameObject:
   m_ObjectHideFlags: 0
@@ -2906,9 +2971,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b6475f5812b7c740b6b82e4b0f347cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadSceneMode: 0
-  UseSceenFader: 1
-  ScreenFadeTime: 0.5
 --- !u!114 &1211550448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3442,9 +3504,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b6475f5812b7c740b6b82e4b0f347cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadSceneMode: 0
-  UseSceenFader: 1
-  ScreenFadeTime: 0.5
 --- !u!114 &1281405895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4421,9 +4480,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b6475f5812b7c740b6b82e4b0f347cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadSceneMode: 0
-  UseSceenFader: 1
-  ScreenFadeTime: 0.5
 --- !u!114 &2133024658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4885,9 +4941,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 15975214172415926}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
         m_MethodName: LoadScene
-        m_Mode: 5
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4978,9 +5034,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b6475f5812b7c740b6b82e4b0f347cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadSceneMode: 0
-  UseSceenFader: 1
-  ScreenFadeTime: 0.5
 --- !u!222 &864132182291869864
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5281,3 +5334,4 @@ SceneRoots:
   - {fileID: 1358554108}
   - {fileID: 262119363}
   - {fileID: 45364800}
+  - {fileID: 1022550123}
